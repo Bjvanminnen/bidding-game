@@ -12,6 +12,7 @@
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
     "chai": "^3.2.0",
+    "express": "^4.13.3",
     "react": "^0.13.3",
     "react-redux": "^2.1.2",
     "redux": "^3.0.0",
@@ -20,6 +21,8 @@
     "redux-thunk": "^0.1.0",
     "seedrandom": "^2.4.2",
     "webpack": "^1.11.0",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.4.1",
     "webpack-success-plugin": "git://github.com/Bjvanminnen/webpack-success-plugin"
   }
 }
