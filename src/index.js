@@ -1,7 +1,17 @@
 import React from 'react';
-import { App } from './App';
+import App from './App';
 
-React.render(<App />, document.getElementById('root'));
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './redux/reducer';
+
+let store = createStore(reducer);
+
+React.render(
+  <Provider store={store}>
+    { () => <App /> }
+  </Provider>,
+  document.getElementById('root'));
 
 /**
 User Actions:
