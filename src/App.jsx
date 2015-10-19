@@ -13,28 +13,43 @@ import { submitBid } from './redux/reducer';
 class App extends React.Component {
   static propTypes = {
     item: React.PropTypes.object.isRequired,
+    player1: React.PropTypes.object.isRequired,
+    player2: React.PropTypes.object.isRequired,
     submitBid: React.PropTypes.func.isRequired
   }
 
+  handleSubmit(playerIndex, value) {
+    this.props.submitBid(playerIndex, value);
+  }
+
   render() {
+    const { item, player1, player2 } = this.props;
     return (
       <table>
         <tr>
-          <td><Balance balance={100}/></td>
-          <td><BidInput max={100} locked={false}/></td>
-          <td><TieBreaker toggle={false}/></td>
-          <td><StatusLine length={this.props.item.max - this.props.item.min} location={this.props.item.current}/></td>
-          <td><TieBreaker toggle={true}/></td>
-          <td><BidInput max={80} locked={true}/></td>
-          <td><Balance balance={80}/></td>
+          <td><Balance balance={player1.balance}/></td>
+          <td><BidInput max={player1.balance} locked={false} onSubmit={this.handleSubmit.bind(this, 0)}/></td>
+          <td><TieBreaker toggle={item.firstPlayerHasTiebreaker}/></td>
+          <td><StatusLine length={item.max - item.min} location={item.current}/></td>
+          <td><TieBreaker toggle={!item.firstPlayerHasTiebreaker}/></td>
+          <td><BidInput max={player2.balance} locked={true} onSubmit={this.handleSubmit.bind(this, 0)}/></td>
+          <td><Balance balance={player2.balance}/></td>
         </tr>
       </table>
     );
   }
 };
 
-export default connect(state => {
+function selector(state) {
   return {
-    item: state.item
+    item: state.item,
+    player1: state.players[0],
+    player2: state.players[1],
   };
-}, dispatch => bindActionCreators({ submitBid }, dispatch))(App);
+}
+
+function actions(dispatch) {
+  return bindActionCreators({ submitBid }, dispatch);
+}
+
+export default connect(selector, actions)(App);

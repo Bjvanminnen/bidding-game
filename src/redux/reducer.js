@@ -18,7 +18,7 @@ const initialState = {
     min: 0,
     max: 7,
     current: 3,
-    firstPlayerHasTiebreaker: 0
+    firstPlayerHasTiebreaker: true
   },
   players: {
     0: initialPlayerState,
