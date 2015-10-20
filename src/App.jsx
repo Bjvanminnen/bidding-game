@@ -28,11 +28,21 @@ class App extends React.Component {
       <table>
         <tr>
           <td><Balance balance={player1.balance}/></td>
-          <td><BidInput max={player1.balance} locked={false} onSubmit={this.handleSubmit.bind(this, 0)}/></td>
+          <td>
+            <BidInput
+              max={player1.balance}
+              locked={player1.currentBid !== null}
+              onSubmit={this.handleSubmit.bind(this, 0)}/>
+          </td>
           <td><TieBreaker toggle={item.firstPlayerHasTiebreaker}/></td>
           <td><StatusLine length={item.max - item.min} location={item.current}/></td>
           <td><TieBreaker toggle={!item.firstPlayerHasTiebreaker}/></td>
-          <td><BidInput max={player2.balance} locked={true} onSubmit={this.handleSubmit.bind(this, 0)}/></td>
+          <td>
+            <BidInput
+              max={player2.balance}
+              locked={player2.currentBid !== null}
+              onSubmit={this.handleSubmit.bind(this, 1)}/>
+          </td>
           <td><Balance balance={player2.balance}/></td>
         </tr>
       </table>
