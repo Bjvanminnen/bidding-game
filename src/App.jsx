@@ -34,9 +34,9 @@ class App extends React.Component {
               locked={player1.currentBid !== null}
               onSubmit={this.handleSubmit.bind(this, 0)}/>
           </td>
-          <td><TieBreaker toggle={item.firstPlayerHasTiebreaker}/></td>
+          <td><TieBreaker toggle={item.p1TieBreaker}/></td>
           <td><StatusLine length={item.max - item.min} location={item.current}/></td>
-          <td><TieBreaker toggle={!item.firstPlayerHasTiebreaker}/></td>
+          <td><TieBreaker toggle={!item.p1TieBreaker}/></td>
           <td>
             <BidInput
               max={player2.balance}

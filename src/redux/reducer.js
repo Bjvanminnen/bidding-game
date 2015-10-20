@@ -20,7 +20,7 @@ const initialState = {
     min: 0,
     max: 7,
     current: 3,
-    firstPlayerHasTiebreaker: true
+    p1TieBreaker: true
   },
   players: [0, 1].map(() => initialPlayerState),
   gameOver: false
@@ -37,6 +37,11 @@ export default function reducer(state = initialState, action) {
   return state;
 }
 
+/**
+ * Given current state and action, calculate what each player is bidding this
+ * turn.
+ * @returns {(number|null)[]}
+ */
 function getCurrentBids(fullState, action) {
   const { playerId, bid } = action;
 
@@ -47,35 +52,25 @@ function getCurrentBids(fullState, action) {
       throw new Error(`Player(${id}) already has a current bid`);
     }
 
+    if (newBid !== NO_BID && newBid > fullState.players[id].balance) {
+      throw new Error('bid too high');
+    }
+
     return currentBid || newBid;
   });
 }
 
 function updateItem(fullState, action) {
   const { playerId, bid } = action;
+  const { item } = fullState;
 
   const bids = getCurrentBids(fullState, action);
-  if (bids[0] === null || bids[1] === null) {
-    return fullState.item;
-  }
-
-  let delta;
-  let tied = false;
-  if (bids[0] < bids[1]) {
-    delta = -1;
-  } else if (bids[0] > bids[1]) {
-    delta = 1;
-  } else {
-    tied = true;
-    delta = fullState.firstPlayerHasTiebreaker ? -1 : 1;
-  }
+  const { delta, p1TieBreaker } = resolveBids(...bids, item.p1TieBreaker);
 
   return {
-    ...fullState.item,
-    current: fullState.current + delta,
-    firstPlayerHasTiebreaker: tied ? !fullState.item.firstPlayerHasTiebreaker :
-      fullState.item.firstPlayerHasTiebreaker,
-    tieBreaker: (fullState.tieBreaker + (tied ? 1 : 0)) % 2
+    ...item,
+    current: item.current + delta,
+    p1TieBreaker
   };
 }
 
@@ -88,19 +83,37 @@ function updatePlayers(fullState, action) {
     throw new Error(`already have bid for player: ${playerId}`);
   }
 
-  if (bids[0] !== NO_BID && bids[1] !== NO_BID) {
-    // TODO - handle resolution (probably share some logic with updateItem)
-    throw new Error('NYI');
-    return fullState.players;
+  const { delta, p1TieBreaker } = resolveBids(...bids, fullState.item.p1TieBreaker);
+
+  return fullState.players.map((player, index) => {
+    // TODO - store historical bids
+    const currentBid = bids[index];
+    return {
+      ...player,
+      currentBid: delta === 0 ? currentBid : null,
+      balance: player.balance - (delta === 0 ? 0 : currentBid)
+    };
+  });
+}
+
+function resolveBids(bid1, bid2, p1TieBreaker) {
+  if (bid1 === NO_BID || bid2 === NO_BID) {
+    return { delta: 0, p1TieBreaker };
   }
 
-  // Not all bids are in yet
+  let delta;
+  let tied = false;
+  if (bid1 < bid2) {
+    delta = -1;
+  } else if (bid1 > bid2) {
+    delta = 1;
+  } else {
+    tied = true;
+    delta = p1TieBreaker ? -1 : 1;
+  }
+
   return {
-    ...[0, 1].map(id => {
-      return {
-        ...fullState.players[id],
-        currentBid: bids[id]
-      };
-    })
+    delta,
+    p1TieBreaker: tied ? !p1TieBreaker : p1TieBreaker
   };
 }
