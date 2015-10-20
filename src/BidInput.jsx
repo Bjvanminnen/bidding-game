@@ -3,9 +3,16 @@ import React from 'react';
 export default class extends React.Component {
   static propTypes = {
     max: React.PropTypes.number.isRequired,
-    locked: React.PropTypes.bool.isRequired,
+    currentBid: React.PropTypes.number,
     onSubmit: React.PropTypes.func.isRequired
-  };
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      value: ''
+    };
+  }
 
   handleSubmit() {
     const value = this.refs.input.getDOMNode().value;
@@ -16,6 +23,17 @@ export default class extends React.Component {
     this.props.onSubmit(num);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // TODO - i dont love this approach
+    if (nextProps.currentBid === null) {
+      this.setState({ value: '' });
+    }
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
   render() {
     const styles = {
       input: {
@@ -23,7 +41,7 @@ export default class extends React.Component {
       }
     };
 
-    // TODO - will need something to reset value to 0
+    const { currentBid, max } = this.props
 
     return (
       <div>
@@ -31,12 +49,14 @@ export default class extends React.Component {
           ref="input"
           style={styles.input}
           type="number"
+          value={this.state.value}
+          onChange={::this.handleChange}
           min={0}
-          max={this.props.max}
-          disabled={this.props.locked}/>
+          max={max}
+          disabled={currentBid !== null}/>
         <button
-          disabled={this.props.locked}
-          onClick={this.handleSubmit.bind(this)}>
+          disabled={currentBid !== null}
+          onClick={::this.handleSubmit}>
           OK
         </button>
       </div>

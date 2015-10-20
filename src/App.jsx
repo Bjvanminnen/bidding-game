@@ -31,7 +31,7 @@ class App extends React.Component {
           <td>
             <BidInput
               max={player1.balance}
-              locked={player1.currentBid !== null}
+              currentBid={player1.currentBid}
               onSubmit={this.handleSubmit.bind(this, 0)}/>
           </td>
           <td><TieBreaker toggle={item.p1TieBreaker}/></td>
@@ -40,7 +40,7 @@ class App extends React.Component {
           <td>
             <BidInput
               max={player2.balance}
-              locked={player2.currentBid !== null}
+              currentBid={player2.currentBid}
               onSubmit={this.handleSubmit.bind(this, 1)}/>
           </td>
           <td><Balance balance={player2.balance}/></td>

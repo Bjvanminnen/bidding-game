@@ -103,9 +103,9 @@ function resolveBids(bid1, bid2, p1TieBreaker) {
 
   let delta;
   let tied = false;
-  if (bid1 < bid2) {
+  if (bid1 > bid2) {
     delta = -1;
-  } else if (bid1 > bid2) {
+  } else if (bid1 < bid2) {
     delta = 1;
   } else {
     tied = true;
