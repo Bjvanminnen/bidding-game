@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './App';
 import MyDevTools from './MyDevTools';
+import ActionSequence from './ActionSequence';
 
 import { compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -20,19 +21,9 @@ React.render(
     <Provider store={store}>
       { () => <App /> }
     </Provider>
+    <Provider store={store}>
+      { () => <ActionSequence /> }
+    </Provider>
     <MyDevTools store={store}/>
   </div>,
   document.getElementById('root'));
-
-/**
-User Actions:
-SUBMIT_BID
-
-Controller Actions:
-
-
-Server Actions:
-RECEIVE_STATE
-
-Some sort of error action?
-*/

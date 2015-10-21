@@ -4,10 +4,14 @@ import React from 'react';
 export default class MyDevTools extends React.Component {
   render() {
     const { store } = this.props;
+    const style = {
+      fontSize: 14
+    };
+
     return (
       <div>
-        <DebugPanel top right bottom>
-          <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
+        <DebugPanel style={style} top right bottom>
+          <DevTools store={store}monitor={LogMonitor} visibleOnLoad={true} />
         </DebugPanel>
       </div>
     );

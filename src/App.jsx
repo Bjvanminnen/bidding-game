@@ -15,7 +15,8 @@ class App extends React.Component {
     item: React.PropTypes.object.isRequired,
     player1: React.PropTypes.object.isRequired,
     player2: React.PropTypes.object.isRequired,
-    submitBid: React.PropTypes.func.isRequired
+    submitBid: React.PropTypes.func.isRequired,
+    gameOver: React.PropTypes.bool.isRequired
   }
 
   handleSubmit(playerIndex, value) {
@@ -35,7 +36,7 @@ class App extends React.Component {
               onSubmit={this.handleSubmit.bind(this, 0)}/>
           </td>
           <td><TieBreaker toggle={item.p1TieBreaker}/></td>
-          <td><StatusLine length={item.max - item.min} location={item.current}/></td>
+          <td><StatusLine length={item.max - item.min + 1} location={item.current}/></td>
           <td><TieBreaker toggle={!item.p1TieBreaker}/></td>
           <td>
             <BidInput
@@ -45,8 +46,19 @@ class App extends React.Component {
           </td>
           <td><Balance balance={player2.balance}/></td>
         </tr>
+        {this.renderGameOver()}
       </table>
     );
+  }
+
+  renderGameOver() {
+    const { item, gameOver} = this.props
+    if (!gameOver) {
+      return;
+    }
+
+    const winningPlayer = item.current === item.min ? 'player1' : 'player2';
+    return <tr><td colSpan="3">GAME OVER: {winningPlayer} wins</td></tr>;
   }
 };
 
@@ -55,6 +67,7 @@ function selector(state) {
     item: state.item,
     player1: state.players[0],
     player2: state.players[1],
+    gameOver: state.gameOver
   };
 }
 
