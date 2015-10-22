@@ -2,7 +2,9 @@
 
 import { getCurrentBids, resolveBids } from './bidUtils';
 
-const SUBMIT_BID = 'bidding-game/SUBMIT_BID';
+export const SUBMIT_BID = 'bidding-game/SUBMIT_BID';
+export const RECEIVE_STATE = 'bidding-game/RECEIVE_STATE';
+
 const NO_BID = null;
 
 export function submitBid(playerId, bid) {
@@ -11,6 +13,13 @@ export function submitBid(playerId, bid) {
     playerId,
     bid
   }
+}
+
+export function receiveState(state) {
+  return {
+    type: RECEIVE_STATE,
+    state
+  };
 }
 
 const initialPlayerState = {
@@ -41,6 +50,22 @@ export default function reducer(state = initialState, action) {
       item: newItem,
       players: players(state, action),
       gameOver: newItem.current === newItem.min || newItem.current === newItem.max
+    };
+  }
+
+  if (action.type === RECEIVE_STATE) {
+    return {
+      ...action.state
+    };
+  }
+  return state;
+}
+
+// TODO - get rid of
+export function clientReducer(state = initialState, action) {
+  if (action.type === RECEIVE_STATE) {
+    return {
+      ...action.state
     };
   }
   return state;
