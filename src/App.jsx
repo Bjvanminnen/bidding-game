@@ -30,7 +30,7 @@ class App extends React.Component {
       return <div>Player choosing UI here</div>;
     }
 
-    const { item, player1, player2, lastBid } = this.props;
+    const { item, player1, player2, lastBid, playerIndex } = this.props;
     return (
       <table>
         <tr>
@@ -45,6 +45,7 @@ class App extends React.Component {
           </td>
           <td>
             <BidInput
+              activePlayer={playerIndex === 0}
               max={player1.balance}
               currentBid={player1.currentBid}
               onSubmit={this.handleSubmit.bind(this, 0)}/>
@@ -54,6 +55,7 @@ class App extends React.Component {
           <td><TieBreaker toggle={!item.p1TieBreaker}/></td>
           <td>
             <BidInput
+              activePlayer={playerIndex === 1}
               max={player2.balance}
               currentBid={player2.currentBid}
               onSubmit={this.handleSubmit.bind(this, 1)}/>
