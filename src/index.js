@@ -8,7 +8,11 @@ import MyDevTools from './MyDevTools';
 import ActionSequence from './ActionSequence';
 
 import reducer from './redux/reducer';
-import { RECEIVE_STATE, receiveState, clientReducer } from './redux/reducer';
+import {
+  RECEIVE_STATE,
+  receiveState,
+  reducer as clientReducer
+} from './redux/clientReducer';
 import server from './server';
 
 // middleware that sends ever action to the server
@@ -23,13 +27,12 @@ const sendToServer = store => next=> action=> {
 const store = compose(
   applyMiddleware(sendToServer),
   devTools(),
-)(createStore)(reducer);
+)(createStore)(clientReducer);
 
-// store2 only responds to RECEIVE_STATE
 const store2 = compose(
   applyMiddleware(sendToServer),
   devTools()
-)(createStore)(clientReducer);
+)(createStore)(reducer);
 
 // listen to server changes, and dispatch state to client store
 server.listen(state => {
@@ -47,6 +50,7 @@ React.render(
     <Provider store={store}>
       { () => <ActionSequence /> }
     </Provider>
-    <MyDevTools store={store2}/>
+    <MyDevTools store={store} right={310}/>
+    <MyDevTools store={store2} right={0}/>
   </div>,
   document.getElementById('root'));

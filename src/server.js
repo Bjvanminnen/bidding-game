@@ -1,10 +1,15 @@
-import { compose, createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { devTools } from 'redux-devtools';
+import createLogger from 'redux-logger';
 
 import reducer from './redux/reducer';
 
-const store = compose()(createStore)(reducer);
+const logger = createLogger();
+
+const store = compose(
+  applyMiddleware(logger)
+)(createStore)(reducer);
 
 let listeners = [];
 

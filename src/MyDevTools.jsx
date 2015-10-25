@@ -5,7 +5,8 @@ export default class MyDevTools extends React.Component {
   render() {
     const { store } = this.props;
     const style = {
-      fontSize: 14
+      fontSize: 14,
+      right: this.props.right
     };
 
     return (

@@ -3,7 +3,6 @@
 import { getCurrentBids, resolveBids } from './bidUtils';
 
 export const SUBMIT_BID = 'bidding-game/SUBMIT_BID';
-export const RECEIVE_STATE = 'bidding-game/RECEIVE_STATE';
 
 const NO_BID = null;
 
@@ -13,13 +12,6 @@ export function submitBid(playerId, bid) {
     playerId,
     bid
   }
-}
-
-export function receiveState(state) {
-  return {
-    type: RECEIVE_STATE,
-    state
-  };
 }
 
 const initialPlayerState = {
@@ -35,7 +27,7 @@ const initialState = {
     p1TieBreaker: true
   },
   players: [0, 1].map(() => initialPlayerState),
-  gameOver: false
+  gameOver: false  
 };
 
 export default function reducer(state = initialState, action) {
@@ -53,21 +45,6 @@ export default function reducer(state = initialState, action) {
     };
   }
 
-  if (action.type === RECEIVE_STATE) {
-    return {
-      ...action.state
-    };
-  }
-  return state;
-}
-
-// TODO - get rid of
-export function clientReducer(state = initialState, action) {
-  if (action.type === RECEIVE_STATE) {
-    return {
-      ...action.state
-    };
-  }
   return state;
 }
 
