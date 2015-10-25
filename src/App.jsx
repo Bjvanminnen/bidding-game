@@ -17,7 +17,8 @@ class App extends React.Component {
     player2: React.PropTypes.object.isRequired,
     submitBid: React.PropTypes.func.isRequired,
     gameOver: React.PropTypes.bool.isRequired,
-    lastBid: React.PropTypes.number.isRequired
+    lastBid: React.PropTypes.number.isRequired,
+    playerIndex: React.PropTypes.number
   }
 
   handleSubmit(playerIndex, value) {
@@ -25,9 +26,18 @@ class App extends React.Component {
   }
 
   render() {
+    if (typeof(this.props.playerIndex) !== 'number') {
+      return <div>Player choosing UI here</div>;
+    }
+
     const { item, player1, player2, lastBid } = this.props;
     return (
       <table>
+        <tr>
+          <td colSpan="3">
+            Player {this.props.playerIndex}
+          </td>
+        </tr>
         <tr>
           <td>
             <Balance balance={player1.balance}/>
@@ -72,7 +82,8 @@ function selector(state) {
     player1: state.players[0],
     player2: state.players[1],
     gameOver: state.gameOver,
-    lastBid: state.private ? state.private.lastBid : ''
+    lastBid: state.private ? state.private.lastBid : '',
+    playerIndex: state.activePlayer
   };
 }
 
