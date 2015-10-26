@@ -65,17 +65,19 @@ const initialStateItem = {
 export default combineReducers({
   item,
   round,
-  gameOver,
   tieBreaker,
   balance,
   bidThisRound,
-  serverOnly
+  serverOnly: combineReducers({
+    bids: serverOnlyBids
+  })
 });
 
 function item(state = initialStateItem, action) {
   if (action.type === RESOLVE_BIDS) {
     const { rootState } = action;
-    throw new Error('NYI');
+    //throw new Error('NYI');
+    return item;
   }
   return state;
 }
@@ -83,13 +85,6 @@ function item(state = initialStateItem, action) {
 function round(state = 1, action) {
   if (action.type === RESOLVE_BIDS) {
     return state + 1;
-  }
-  return state;
-}
-
-function gameOver(state = false, action) {
-  if (action.type === RESOLVE_BIDS) {
-    throw new Error('NYI');
   }
   return state;
 }
@@ -108,7 +103,8 @@ function tieBreaker(state = [true, false], action) {
 
 function balance(state = [100, 100], action) {
   if (action.type === RESOLVE_BIDS) {
-    throw new Error('NYI');
+    const { bids } = action.rootState.serverOnly;
+    return state.map((current, index) => current - bids[index]);
   }
   return state;
 }
@@ -129,10 +125,6 @@ function bidThisRound(state = [false, false], action) {
   return state;
 }
 
-const serverOnly = combineReducers({
-  bids: serverOnlyBids
-});
-
 function serverOnlyBids(state = [NO_BID, NO_BID], action) {
   if (action.type === SUBMIT_BID) {
     const { playerId, bid } = action;
@@ -142,6 +134,11 @@ function serverOnlyBids(state = [NO_BID, NO_BID], action) {
     if (state[playerId] !== NO_BID) {
       throw new Error(`Already have a bid for: ${playerId}`);
     }
+    // TODO - dont have access to balance. should all validation happen in
+    // middleware? can we have this in our root reducer?
+    // if (bid > rootState.balance[playerId]) {
+    //   throw new Error('Bid greater than balance');
+    // }
     return state.map((existingBid, index) => index === playerId ? bid : existingBid);
   } else if (action.type === RESOLVE_BIDS) {
     return [NO_BID, NO_BID];

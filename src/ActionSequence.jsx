@@ -13,10 +13,28 @@ import {
 } from './redux/serverReducer';
 
 class ActionSequence extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      clicks: 0
+    };
+  }
+
   handleClick() {
     const { submitBid } = this.props;
 
-    submitBid(0, 1);
+
+    // TODO - could use generators?
+    switch (this.state.clicks) {
+    case 0:
+      submitBid(0, 1);
+      break;
+    case 1: 
+      submitBid(1, 1);
+      break;
+    }
+
+    this.setState({ clicks: this.state.clicks + 1 });
   }
 
   render() {
