@@ -51,7 +51,7 @@ export const resolveBidsIfNecessary = store => next=> action=> {
     }
     // Don't alert client in this case until we've resolved
   } else {
-    // TODO - let client know about changes
+    // TODO - let client know about changes - dont include server only
   }
 };
 
@@ -75,9 +75,26 @@ export default combineReducers({
 
 function item(state = initialStateItem, action) {
   if (action.type === RESOLVE_BIDS) {
-    const { rootState } = action;
-    //throw new Error('NYI');
-    return item;
+    const { tieBreaker, serverOnly } = action.rootState;
+    const [bid1, bid2] = serverOnly.bids;
+
+    let delta;
+    if (bid1 < bid2) {
+      delta = -1;
+    } else if (bid1 > bid2) {
+      delta = 1;
+    } else {
+      delta = tieBreaker[0] ? -1 : 1
+    }
+
+    if (state.current + delta > state.max || state.current + delta < state.min) {
+      throw new Error('Moved item off the board');
+    }
+
+    return {
+      ...state,
+      current: state.current + delta
+    }
   }
   return state;
 }
