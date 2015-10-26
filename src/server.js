@@ -2,6 +2,7 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { devTools } from 'redux-devtools';
 import createLogger from 'redux-logger';
+import serverReducer from './redux/serverReducer';
 
 import reducer from './redux/reducer';
 

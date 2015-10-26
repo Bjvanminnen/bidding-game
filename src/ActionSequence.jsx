@@ -2,21 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// TODO - file is misnamed if we're using duck modules
-import { submitBid } from './redux/reducer';
+import {
+  ACTIVATE_USER,
+  SUBMIT_BID,
+  SERVER_UPDATE,
+  RESOLVE_BIDS,
+  activateUser,
+  submitBid,
+  resolveBidsIfNecessary
+} from './redux/serverReducer';
 
 class ActionSequence extends React.Component {
   handleClick() {
     const { submitBid } = this.props;
 
     submitBid(0, 1);
-    submitBid(1, 2);
-
-    submitBid(0, 1);
-    submitBid(1, 2);
-
-    submitBid(0, 1);
-    submitBid(1, 2);
   }
 
   render() {
