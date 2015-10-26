@@ -4,7 +4,6 @@ const NO_BID = null; // TODO - share?
 
 export default class extends React.Component {
   static propTypes = {
-    activePlayer: React.PropTypes.bool.isRequired,
     max: React.PropTypes.number.isRequired,
     currentBid: React.PropTypes.number,
     onSubmit: React.PropTypes.func.isRequired
@@ -47,10 +46,6 @@ export default class extends React.Component {
     const { currentBid, max } = this.props
 
     const haveBid = currentBid !== NO_BID;
-
-    if (!this.props.activePlayer) {
-      return <div>{haveBid ? "\u2705" : "?"}</div>;
-    }
 
     return (
       <div>

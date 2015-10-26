@@ -29,9 +29,13 @@ export default class extends React.Component {
 
     return (
       <table>
-        <td>
-          {cols}
-        </td>
+        <tr>
+          <td>P0</td>
+          <td>
+            {cols}
+          </td>
+          <td>P1</td>
+        </tr>
       </table>
     );
   }

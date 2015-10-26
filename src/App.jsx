@@ -10,6 +10,10 @@ import BidInput from './BidInput';
 // TODO - file is misnamed if we're using duck modules
 import { submitBid } from './redux/reducer';
 
+function checkmark(boolean) {
+   return boolean ? '\u2714' : '\u2716'
+}
+
 class App extends React.Component {
   static propTypes = {
     item: React.PropTypes.object.isRequired,
@@ -17,7 +21,7 @@ class App extends React.Component {
     player2: React.PropTypes.object.isRequired,
     submitBid: React.PropTypes.func.isRequired,
     gameOver: React.PropTypes.bool.isRequired,
-    lastBid: React.PropTypes.number.isRequired,
+    currentBid: React.PropTypes.number.isRequired,
     playerIndex: React.PropTypes.number
   }
 
@@ -30,7 +34,13 @@ class App extends React.Component {
       return <div>Player choosing UI here</div>;
     }
 
-    const { item, player1, player2, lastBid, playerIndex } = this.props;
+    const { item, player1, player2, currentBid, playerIndex } = this.props;
+
+    const me = playerIndex === 0 ? player1 : player2;
+    const them = playerIndex === 1 ? player1 : player2;
+
+    const ownsTie = playerIndex === 0 && item.p1TieBreaker;
+
     return (
       <table>
         <tr>
@@ -40,27 +50,26 @@ class App extends React.Component {
         </tr>
         <tr>
           <td>
-            <Balance balance={player1.balance}/>
-            <div>-{lastBid}</div>
+            <Balance balance={me.balance}/>
+            <div>currentBid: $ {currentBid}</div>
           </td>
+        </tr>
+        <tr>
+          <td>Owns tiebreaker: {checkmark(ownsTie)}</td>
+        </tr>
+        <tr>
+          <td>Opponent bid: {checkmark(them.currentBid !== null)}</td>
+        </tr>
+        <tr>
           <td>
             <BidInput
-              activePlayer={playerIndex === 0}
-              max={player1.balance}
-              currentBid={player1.currentBid}
-              onSubmit={this.handleSubmit.bind(this, 0)}/>
+              max={me.balance}
+              currentBid={currentBid}
+              onSubmit={this.handleSubmit.bind(this, playerIndex)}/>
           </td>
-          <td><TieBreaker toggle={item.p1TieBreaker}/></td>
+        </tr>
+        <tr>
           <td><StatusLine length={item.max - item.min + 1} location={item.current}/></td>
-          <td><TieBreaker toggle={!item.p1TieBreaker}/></td>
-          <td>
-            <BidInput
-              activePlayer={playerIndex === 1}
-              max={player2.balance}
-              currentBid={player2.currentBid}
-              onSubmit={this.handleSubmit.bind(this, 1)}/>
-          </td>
-          <td><Balance balance={player2.balance}/></td>
         </tr>
         {this.renderGameOver()}
       </table>
@@ -84,7 +93,7 @@ function selector(state) {
     player1: state.players[0],
     player2: state.players[1],
     gameOver: state.gameOver,
-    lastBid: state.private ? state.private.lastBid : '',
+    currentBid: state.private ? state.private.currentBid : null,
     playerIndex: state.activePlayer
   };
 }

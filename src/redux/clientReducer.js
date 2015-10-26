@@ -39,7 +39,7 @@ const initialState = {
 const clientInitialState = {
   ...initialState,
   private: {
-    lastBid: 0
+    currentBid: NO_BID
   },
   activePlayer: null
 };
@@ -74,8 +74,9 @@ export function reducer(state = clientInitialState, action) {
     throwIfNoActivePlayer(state);
     return {
       ...state,
+      // TODO - need to update this in RECIEVE_STATE, but only under some circumstances
       private: {
-        lastBid: action.bid
+        currentBid: action.bid
       }
     };
   }

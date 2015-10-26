@@ -49,7 +49,7 @@ React.render(
     <Provider store={store}>
       { () => <App /> }
     </Provider>
-    <div style={{padding: 30}}>----------------------------------------------------------------------</div>
+    <div style={{padding: 20}}>----------------------------------------------------------------------</div>
     <Provider store={store2}>
       { () => <App /> }
     </Provider>
