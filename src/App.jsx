@@ -31,7 +31,7 @@ class App extends React.Component {
 
   render() {
     const { playerIndex, ownsTie, currentBid, opponentHasBid, balance,
-      lineLength, itemPosition } = this.props
+      lineLength, itemPosition, round } = this.props
 
     if (typeof(playerIndex) !== 'number') {
       return <div>Player choosing UI here</div>;
@@ -60,6 +60,7 @@ class App extends React.Component {
           <td>
             <BidInput
               max={balance}
+              round={round}
               currentBid={currentBid}
               onSubmit={this.handleSubmit.bind(this, playerIndex)}/>
           </td>
@@ -98,6 +99,7 @@ function selector(state) {
     balance: server.balance[activePlayer],
     lineLength: server.item.max - server.item.min + 1,
     itemPosition: server.item.current,
+    round: server.round,
     // TODO - where should logic live?
     winningPlayer: null
   };

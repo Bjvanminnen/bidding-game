@@ -9,10 +9,11 @@ export default class extends React.Component {
     onSubmit: React.PropTypes.func.isRequired
   }
 
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      value: ''
+      value: '',
+      round: props.round
     };
   }
 
@@ -27,8 +28,8 @@ export default class extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // TODO - i dont love this approach
-    if (nextProps.currentBid === NO_BID) {
-      this.setState({ value: '' });
+    if (nextProps.currentBid === NO_BID && nextProps.round > this.state.round) {
+      this.setState({ value: '', round: this.state.round});
     }
   }
 
