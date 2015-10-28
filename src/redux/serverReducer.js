@@ -9,13 +9,6 @@ export const RESOLVE_BIDS = 'bidding-game/server/RESOLVE_BIDS';
 export const NO_BID = null;
 
 // action creators
-export function activatePlayer(playerIndex) {
-  return {
-    type: ACTIVATE_PLAYER,
-    playerIndex
-  };
-}
-
 export function submitBid(playerId, bid) {
   return {
     type: SUBMIT_BID,

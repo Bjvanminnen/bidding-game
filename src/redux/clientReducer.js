@@ -1,17 +1,13 @@
-import { SUBMIT_BID } from './reducer';
+import { combineReducers } from 'redux';
 
-export const RECEIVE_STATE = 'bidding-game/RECEIVE_STATE';
-export const ACTIVATE_PLAYER = 'bidding-game/ACTIVATE_PLAYER';
+// TODO - dedup actions
+export const ACTIVATE_PLAYER = 'bidding-game/client/ACTIVATE_PLAYER';
+export const SERVER_UPDATE = 'bidding-game/server/SERVER_UPDATE';
+export const SUBMIT_BID = 'bidding-game/client/SUBMIT_BID';
 
-const NO_BID = null;
+export const NO_BID = null;
 
-export function receiveState(state) {
-  return {
-    type: RECEIVE_STATE,
-    state
-  };
-}
-
+// action creators
 export function activatePlayer(playerIndex) {
   return {
     type: ACTIVATE_PLAYER,
@@ -19,67 +15,37 @@ export function activatePlayer(playerIndex) {
   };
 }
 
-// TODO - can i get rid of initial state here? if not, should share at least
-const initialPlayerState = {
-  balance: 100,
-  currentBid: NO_BID
-};
-
-const initialState = {
-  item: {
-    min: 0,
-    max: 6,
-    current: 3,
-    p1TieBreaker: true
-  },
-  players: [0, 1].map(() => initialPlayerState),
-  gameOver: false
-};
-
-const clientInitialState = {
-  ...initialState,
-  private: {
-    currentBid: NO_BID
-  },
-  activePlayer: null
-};
-
-function throwIfNoActivePlayer(state) {
-  if (state.activePlayer === null) {
-    throw new Error('Need active player');
+// reducers
+function serverState(state = null, action) {
+  if (action.type === SERVER_UPDATE) {
+    return action.state;
   }
+  return state;
 }
 
-// TODO - eventually i think the client responds to SUBMIT_BID to update some
-// of their private data
-export function reducer(state = clientInitialState, action) {
+function activePlayer(state = null, action) {
   if (action.type === ACTIVATE_PLAYER) {
-    if (state.activePlayer !== null) {
-      throw new Error('Already have an active player');
-    }
-    return {
-      ...state,
-      activePlayer: action.playerIndex
-    };
-  }
-
-  if (action.type === RECEIVE_STATE) {
-    throwIfNoActivePlayer(state);
-    return {
-      ...state,
-      ...action.state
-    };
-  }
-  if (action.type === SUBMIT_BID) {
-    throwIfNoActivePlayer(state);
-    return {
-      ...state,
-      // TODO - need to update this in RECIEVE_STATE, but only under some circumstances
-      private: {
-        currentBid: action.bid
-      }
-    };
+    return action.playerIndex;
   }
 
   return state;
 }
+
+function currentBid(state = [NO_BID, NO_BID], action) {
+  if (action.type === SUBMIT_BID) {
+    const { playerId, bid } = action;
+    return state.map((_, index) => index === playerId ? bid : NO_BID);
+  }
+  if (action.type === SERVER_UPDATE) {
+    const { bidThisRound } = action.state;
+    return state.map((_, index) => bidThisRound[index] ? state[index] : NO_BID);
+  }
+  
+  return state;
+}
+
+export default combineReducers({
+  serverState,
+  activePlayer,
+  currentBid
+});

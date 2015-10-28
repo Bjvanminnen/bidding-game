@@ -27,7 +27,7 @@ export default class extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // TODO - i dont love this approach
-    if (nextProps.currentBid === null) {
+    if (nextProps.currentBid === NO_BID) {
       this.setState({ value: '' });
     }
   }
