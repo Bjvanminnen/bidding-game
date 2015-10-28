@@ -12,7 +12,7 @@ export default class MyDevTools extends React.Component {
     return (
       <div>
         <DebugPanel style={style} top right bottom>
-          <DevTools store={store}monitor={LogMonitor} visibleOnLoad={true} />
+          <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
         </DebugPanel>
       </div>
     );

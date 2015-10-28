@@ -23,13 +23,12 @@ class ActionSequence extends React.Component {
   handleClick() {
     const { submitBid } = this.props;
 
-
     // TODO - could use generators?
     switch (this.state.clicks) {
     case 0:
       submitBid(0, 1);
       break;
-    case 1: 
+    case 1:
       submitBid(1, 1);
       break;
     }

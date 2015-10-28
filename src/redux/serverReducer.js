@@ -44,16 +44,17 @@ export const resolveBidsIfNecessary = store => next=> action=> {
   next(action);
   if (action.type === SUBMIT_BID) {
     const nextState = store.getState();
-
-    const [ p1DidBid, p2DidBid ] = nextState.bidThisRound;
-    if (p1DidBid && p2DidBid) {
+    if (readyForResolve(nextState)) {
       store.dispatch(resolveBids(nextState));
     }
-    // Don't alert client in this case until we've resolved
-  } else {
-    // TODO - let client know about changes - dont include server only
   }
 };
+
+// helper
+export function readyForResolve(state) {
+  const [ p1DidBid, p2DidBid ] = state.bidThisRound;
+  return p1DidBid && p2DidBid;
+}
 
 // reducers
 const initialStateItem = {
