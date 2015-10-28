@@ -1,21 +1,9 @@
 import { combineReducers } from 'redux';
 
-// TODO - dedup actions
-export const ACTIVATE_PLAYER = 'bidding-game/client/ACTIVATE_PLAYER';
-export const SERVER_UPDATE = 'bidding-game/server/SERVER_UPDATE';
-export const SUBMIT_BID = 'bidding-game/client/SUBMIT_BID';
+import { ACTIVATE_PLAYER, SUBMIT_BID } from './clientActions';
+import { SERVER_UPDATE } from './serverActions';
+import { NO_BID } from './constants';
 
-export const NO_BID = null;
-
-// action creators
-export function activatePlayer(playerIndex) {
-  return {
-    type: ACTIVATE_PLAYER,
-    playerIndex
-  };
-}
-
-// reducers
 function serverState(state = null, action) {
   if (action.type === SERVER_UPDATE) {
     return action.state;
@@ -40,7 +28,7 @@ function currentBid(state = [NO_BID, NO_BID], action) {
     const { bidThisRound } = action.state;
     return state.map((_, index) => bidThisRound[index] ? state[index] : NO_BID);
   }
-  
+
   return state;
 }
 

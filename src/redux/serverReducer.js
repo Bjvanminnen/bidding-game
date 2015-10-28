@@ -1,36 +1,8 @@
 import { combineReducers } from 'redux';
 
-// actions
-export const ACTIVATE_PLAYER = 'bidding-game/client/ACTIVATE_PLAYER';
-export const SUBMIT_BID = 'bidding-game/client/SUBMIT_BID';
-export const SERVER_UPDATE = 'bidding-game/server/SERVER_UPDATE';
-export const RESOLVE_BIDS = 'bidding-game/server/RESOLVE_BIDS';
-
-export const NO_BID = null;
-
-// action creators
-export function submitBid(playerId, bid) {
-  return {
-    type: SUBMIT_BID,
-    playerId,
-    bid
-  }
-}
-
-export function serverUpdate(state) {
-  // TODO - perhaps we strip private info here?
-  return {
-    type: SERVER_UPDATE,
-    state
-  };
-}
-
-export function resolveBids(rootState) {
-  return {
-    type: RESOLVE_BIDS,
-    rootState
-  };
-}
+import { SUBMIT_BID } from './clientActions';
+import { RESOLVE_BIDS, resolveBids } from './serverActions';
+import { NO_BID } from './constants';
 
 // middleware
 export const resolveBidsIfNecessary = store => next=> action=> {
@@ -73,9 +45,9 @@ function item(state = initialStateItem, action) {
     const [bid1, bid2] = serverOnly.bids;
 
     let delta;
-    if (bid1 < bid2) {
+    if (bid1 > bid2) {
       delta = -1;
-    } else if (bid1 > bid2) {
+    } else if (bid1 < bid2) {
       delta = 1;
     } else {
       delta = tieBreaker[0] ? -1 : 1

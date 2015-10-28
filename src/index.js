@@ -8,11 +8,11 @@ import MyDevTools from './MyDevTools';
 import ActionSequence from './ActionSequence';
 
 import serverReducer from './redux/serverReducer';
-import { SUBMIT_BID, serverUpdate } from './redux/serverReducer';
+import { serverUpdate } from './redux/serverActions';
 import server from './server';
 
 import clientReducer from './redux/clientReducer';
-import { activatePlayer } from './redux/clientReducer';
+import { SUBMIT_BID, activatePlayer } from './redux/clientActions';
 
 // middleware that sends ever action to the server
 const sendToServer = store => next=> action=> {

@@ -7,8 +7,7 @@ import Balance from './Balance';
 import TieBreaker from './TieBreaker';
 import BidInput from './BidInput';
 
-// TODO - file is misnamed if we're using duck modules
-import { submitBid } from './redux/serverReducer';
+import { submitBid } from './redux/clientActions';
 
 function checkmark(boolean) {
    return boolean ? '\u2714' : '\u2716'
