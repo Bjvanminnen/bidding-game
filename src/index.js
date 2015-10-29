@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { devTools } from 'redux-devtools';
+import io from 'socket.io-client';
 
 import App from './App';
 import MyDevTools from './MyDevTools';
@@ -33,6 +34,12 @@ const store2 = compose(
   devTools()
 )(createStore)(clientReducer);
 store2.dispatch(activatePlayer(1));
+
+const socket = io(`${location.protocol}//${location.hostname}:8080`);
+socket.on('test', state => {
+  console.log(state);
+  // store.dispatch(setState(state))
+});
 
 // listen to server changes, and dispatch state to client store
 server.listen(state => {
