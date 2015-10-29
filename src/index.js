@@ -10,15 +10,16 @@ import ActionSequence from './ActionSequence';
 
 import serverReducer from './redux/serverReducer';
 import { serverUpdate } from './redux/serverActions';
-import server from './server';
 
 import clientReducer from './redux/clientReducer';
 import { SUBMIT_BID, activatePlayer } from './redux/clientActions';
 
+const socket = io(`${location.protocol}//${location.hostname}:8080`);
+
 // middleware that sends ever action to the server
 const sendToServer = store => next=> action=> {
   if (action.type === SUBMIT_BID) {
-    server.applyAction(action);
+    socket.emit('action', action);
   }
   next(action);
 };
@@ -35,19 +36,10 @@ const store2 = compose(
 )(createStore)(clientReducer);
 store2.dispatch(activatePlayer(1));
 
-const socket = io(`${location.protocol}//${location.hostname}:8080`);
-socket.on('test', state => {
-  console.log(state);
-  // store.dispatch(setState(state))
-});
-
-// listen to server changes, and dispatch state to client store
-server.listen(state => {
+socket.on('update', state => {
   store.dispatch(serverUpdate(state));
   store2.dispatch(serverUpdate(state));
 });
-
-server.requestState();
 
 React.render(
   <div>
@@ -61,8 +53,7 @@ React.render(
     <Provider store={store}>
       { () => <ActionSequence /> }
     </Provider>
-    <MyDevTools store={store} right={620}/>
-    <MyDevTools store={store2} right={310}/>
-    <MyDevTools store={server.store} right={0}/>
+    <MyDevTools store={store} right={310}/>
+    <MyDevTools store={store2} right={0}/>
   </div>,
   document.getElementById('root'));
