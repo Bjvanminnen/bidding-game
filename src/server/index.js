@@ -1,23 +1,34 @@
-import { compose, createStore, applyMiddleware } from 'redux';
 import Server from 'socket.io';
-import createLogger from 'redux-node-logger';
+import { readyForResolve } from '../redux/serverReducer';
 
-import serverReducer from '../redux/serverReducer';
-import { resolveBidsIfNecessary, readyForResolve } from '../redux/serverReducer';
+import { getActiveStore, createActiveStore } from './storeManager';
 
 const io = new Server(8080);
-const logger = createLogger();
+
+// TODO - should really track which are still connected
+let sockets = [];
 
 io.on('connection', socket => {
-  // TODO - this approach stops working when we have multiple clients
-  const store = compose(
-    applyMiddleware(resolveBidsIfNecessary, logger)
-  )(createStore)(serverReducer);
+  sockets.push(socket);
 
+  console.log('connection');
+  let unsubscribe = attachSocketToStore(socket, getActiveStore());
+
+  // Note: Other connected clients are still attached to the old store
+  socket.on('reset', () => {
+    console.log('reset');
+    unsubscribe();
+    unsubscribe = attachSocketToStore(socket, createActiveStore());
+  });
+});
+
+
+function attachSocketToStore(socket, store) {
+  const onAction = store.dispatch.bind(store);
   socket.emit('update', store.getState());
-  socket.on('action', store.dispatch.bind(store));
+  socket.on('action', onAction);
 
-  store.subscribe(() => {
+  const unsubscribeStore = store.subscribe(() => {
     const state = store.getState();
 
     // wait for resolution before informing client
@@ -25,7 +36,11 @@ io.on('connection', socket => {
       return;
     }
 
-    socket.emit('update', store.getState());
+    socket.emit('update', state);
   });
 
-});
+  return function detachSocketFomStore() {
+    unsubscribeStore();
+    socket.removeListener('action', onAction);
+  }
+}

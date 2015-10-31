@@ -41,6 +41,10 @@ socket.on('update', state => {
   store2.dispatch(serverUpdate(state));
 });
 
+function resetServerStore() {
+  socket.emit('reset')
+}
+
 React.render(
   <div>
     <Provider store={store}>
@@ -55,5 +59,6 @@ React.render(
     </Provider>
     <MyDevTools store={store} right={310}/>
     <MyDevTools store={store2} right={0}/>
+    <button onClick={resetServerStore}>Reset</button>
   </div>,
   document.getElementById('root'));

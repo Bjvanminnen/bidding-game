@@ -8,6 +8,7 @@ import TieBreaker from './TieBreaker';
 import BidInput from './BidInput';
 
 import { submitBid } from './redux/clientActions';
+import { NO_BID } from './redux/constants';
 
 function checkmark(boolean) {
    return boolean ? '\u2714' : '\u2716'
@@ -89,11 +90,15 @@ function selector(state) {
     return {};
   }
 
+  // TODO - good solution for server sending down filtered state. ie. we shouldnt
+  // really be looking at state.serverOnly at all
+
   const otherPlayer = (activePlayer + 1) % 2;
   return {
     playerIndex: activePlayer,
     ownsTie: server.tieBreaker[activePlayer],
-    currentBid: currentBid[activePlayer],
+    currentBid: currentBid[activePlayer] !== NO_BID ? currentBid[activePlayer] :
+      server.serverOnly.bids[activePlayer],
     opponentHasBid: server.bidThisRound[otherPlayer],
     balance: server.balance[activePlayer],
     lineLength: server.item.max - server.item.min + 1,
