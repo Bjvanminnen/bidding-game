@@ -16,6 +16,7 @@ function checkmark(boolean) {
 
 class App extends React.Component {
   static propTypes = {
+    // TODO - used propTypes
     // item: React.PropTypes.object.isRequired,
     // player1: React.PropTypes.object.isRequired,
     // player2: React.PropTypes.object.isRequired,

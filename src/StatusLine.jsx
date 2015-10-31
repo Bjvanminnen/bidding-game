@@ -30,11 +30,11 @@ export default class extends React.Component {
     return (
       <table>
         <tr>
-          <td>P0</td>
+          <td>P1</td>
           <td>
             {cols}
           </td>
-          <td>P1</td>
+          <td>P2</td>
         </tr>
       </table>
     );
