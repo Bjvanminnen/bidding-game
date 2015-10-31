@@ -29,6 +29,7 @@ const initialStateItem = {
 };
 
 export default combineReducers({
+  storeId,
   item,
   round,
   tieBreaker,
@@ -38,6 +39,10 @@ export default combineReducers({
     bids: serverOnlyBids
   })
 });
+
+function storeId(state = "undefined") {
+  return state;
+}
 
 function item(state = initialStateItem, action) {
   if (action.type === RESOLVE_BIDS) {

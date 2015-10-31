@@ -6,6 +6,8 @@ import { resolveBidsIfNecessary } from '../redux/serverReducer';
 
 // const logger = createLogger();
 
+let storeId = 0;
+
 const logger = store => next => action => {
   console.log(action.type);
   next(action);
@@ -23,6 +25,6 @@ export function getActiveStore() {
 export function createActiveStore() {
   activeStore = compose(
     applyMiddleware(resolveBidsIfNecessary, logger)
-  )(createStore)(serverReducer);
+  )(createStore)(serverReducer, { storeId: storeId++ });
   return activeStore;
 }

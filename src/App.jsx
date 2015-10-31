@@ -31,7 +31,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { playerIndex, ownsTie, currentBid, opponentHasBid, balance,
+    const { storeId, playerIndex, ownsTie, currentBid, opponentHasBid, balance,
       lineLength, itemPosition, round } = this.props
 
     if (typeof(playerIndex) !== 'number') {
@@ -40,6 +40,9 @@ class App extends React.Component {
 
     return (
       <table>
+        <tr>
+          <td>Store {storeId}</td>
+        </tr>
         <tr>
           <td colSpan="3">
             Player {playerIndex + 1}
@@ -96,6 +99,7 @@ function selector(state) {
 
   const otherPlayer = (activePlayer + 1) % 2;
   return {
+    storeId: server.storeId,
     playerIndex: activePlayer,
     ownsTie: server.tieBreaker[activePlayer],
     currentBid: currentBid[activePlayer] !== NO_BID ? currentBid[activePlayer] :
