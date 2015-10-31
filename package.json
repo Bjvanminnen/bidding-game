@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node devServer",
-    "server": "babel-node src/server/index.js",
+    "server": "node src/server/index-babel.js",
     "watch": "webpack --watch"
   },
   "author": "",
