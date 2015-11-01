@@ -1,19 +1,31 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var PROD = process.env.NODE_ENV === 'production';
+
 module.exports = {
-  // devtool: 'eval',
-  devtool: "inline-source-map",
-  entry: [
-    'webpack-hot-middleware/client',
-    './src/index'
-  ],
+  devtool: PROD ? 'source-map' : "inline-source-map",
+  entry: (PROD ? [] : ['webpack-hot-middleware/client']).concat(
+    ['./src/index']
+  ),
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },
-  plugins: [
+  plugins: PROD ? [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    })
+  ] : [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
