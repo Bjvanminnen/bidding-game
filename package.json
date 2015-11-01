@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "NODE_ENV=production webpack",
     "start": "node devServer",
     "server": "node src/server/index-babel.js",
     "watch": "webpack --watch"
