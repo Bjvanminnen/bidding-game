@@ -2,6 +2,8 @@ import express from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
+import Html from '../Html';
+
 const app = express();
 
 app.use('/js', express.static(__dirname + '/../../dist'));
@@ -11,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/server-index.html', (req, res) => {
-  res.send('<!doctype html>\n' + ReactDOM.renderToString(<div>hello</div>));
+  res.send('<!doctype html>\n' + ReactDOM.renderToString(<Html/>));
 });
 
 const server = app.listen(3000, () => {
