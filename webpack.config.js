@@ -33,11 +33,30 @@ module.exports = {
     extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],
     root: path.resolve(__dirname, "node_modules")
   },
- module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
-    }]
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        include: path.join(__dirname, 'src'),
+        exclude: /node_modules/,
+        query: {
+          stage: 0,
+          plugins: ["react-transform"],
+          extra: {
+            "react-transform": {
+              transforms: [{
+                transform: "react-transform-hmr",
+                imports: ["react"],
+                locals: ["module"]
+              }, {
+                transform: "react-transform-catch-errors",
+                imports: ["react", "redbox-react"]
+              }]
+            }
+          }
+        }
+      }
+    ]
   }
 };
