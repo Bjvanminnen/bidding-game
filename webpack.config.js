@@ -42,8 +42,8 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           stage: 0,
-          plugins: ["react-transform"],
-          extra: {
+          plugins: PROD ? undefined : ["react-transform"],
+          extra: PROD ? undefined : {
             "react-transform": {
               transforms: [{
                 transform: "react-transform-hmr",

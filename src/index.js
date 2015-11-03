@@ -48,10 +48,10 @@ function resetServerStore() {
 React.render(
   <div>
     <Provider store={store}>
-      { () => <App /> }
+      <App />
     </Provider>
     <Provider store={store}>
-      { () => <ActionSequence /> }
+      <ActionSequence />
     </Provider>
     <MyDevTools store={store} right={0}/>
     <button onClick={resetServerStore}>Reset</button>

@@ -87,7 +87,7 @@ class App extends React.Component {
   }
 };
 
-function selector(state) {
+function selector(state) {  
   const { activePlayer, currentBid } = state;
   const server = state.serverState;
   if (!server) {
