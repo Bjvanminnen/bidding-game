@@ -18,7 +18,7 @@ export default class extends React.Component {
   }
 
   handleSubmit() {
-    const value = this.refs.input.getDOMNode().value;
+    const value = this.refs.input.value;
     const num = parseInt(value, 10);
     if (isNaN(num)) {
       return;

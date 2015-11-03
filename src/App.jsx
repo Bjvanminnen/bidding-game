@@ -40,39 +40,41 @@ class App extends React.Component {
 
     return (
       <table>
-        <tr>
-          <td>Store {storeId}</td>
-        </tr>
-        <tr>
-          <td colSpan="3">
-            Player {playerIndex + 1}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Balance balance={balance}/>
-            <div>currentBid: $ {currentBid}</div>
-          </td>
-        </tr>
-        <tr>
-          <td>Owns tiebreaker: {checkmark(ownsTie)}</td>
-        </tr>
-        <tr>
-          <td>Opponent bid: {checkmark(opponentHasBid)}</td>
-        </tr>
-        <tr>
-          <td>
-            <BidInput
-              max={balance}
-              round={round}
-              currentBid={currentBid}
-              onSubmit={this.handleSubmit.bind(this, playerIndex)}/>
-          </td>
-        </tr>
-        <tr>
-          <td><StatusLine length={lineLength} location={itemPosition}/></td>
-        </tr>
-        {this.renderGameOver()}
+        <tbody>
+          <tr>
+            <td>Store {storeId}</td>
+          </tr>
+          <tr>
+            <td colSpan="3">
+              Player {playerIndex + 1}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Balance balance={balance}/>
+              <div>currentBid: $ {currentBid}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Owns tiebreaker: {checkmark(ownsTie)}</td>
+          </tr>
+          <tr>
+            <td>Opponent bid: {checkmark(opponentHasBid)}</td>
+          </tr>
+          <tr>
+            <td>
+              <BidInput
+                max={balance}
+                round={round}
+                currentBid={currentBid}
+                onSubmit={this.handleSubmit.bind(this, playerIndex)}/>
+            </td>
+          </tr>
+          <tr>
+            <td><StatusLine length={lineLength} location={itemPosition}/></td>
+          </tr>
+          {this.renderGameOver()}
+        </tbody>
       </table>
     );
   }
@@ -87,7 +89,7 @@ class App extends React.Component {
   }
 };
 
-function selector(state) {  
+function selector(state) {
   const { activePlayer, currentBid } = state;
   const server = state.serverState;
   if (!server) {

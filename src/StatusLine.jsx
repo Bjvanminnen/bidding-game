@@ -29,13 +29,13 @@ export default class extends React.Component {
 
     return (
       <table>
-        <tr>
-          <td>P1</td>
-          <td>
+        <tbody>
+          <tr>
+            <td>P1</td>
             {cols}
-          </td>
-          <td>P2</td>
-        </tr>
+            <td>P2</td>
+          </tr>
+        </tbody>
       </table>
     );
   }
