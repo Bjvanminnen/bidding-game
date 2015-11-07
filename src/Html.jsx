@@ -12,7 +12,7 @@ export default class extends React.Component {
         <body>
           <div id='root'/>
           <script dangerouslySetInnerHTML={{__html: `window.__initialState=${initialState};`}} />
-          <script src="/js/bundle.js" charSet="utf-8"></script>
+          <script src={this.props.assets.javascript.main} charSet="utf-8"></script>
         </body>
       </html>
     );

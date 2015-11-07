@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.prod.js",
-    "start": "node devServer",
-    "server": "node src/server/fileServer-babel.js",
+    "devserver": "PORT=3001 node devServer",
+    "server": "PORT=3002 node src/server/fileServer-babel.js",
+    "socket-server": "PORT=8080 node src/server/index-babel.js",
     "watch": "webpack --watch"
   },
   "author": "",
