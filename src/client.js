@@ -9,7 +9,6 @@ import App from './App';
 import MyDevTools from './MyDevTools';
 import ActionSequence from './ActionSequence';
 
-import serverReducer from './redux/serverReducer';
 import { serverUpdate } from './redux/serverActions';
 
 import clientReducer from './redux/clientReducer';

@@ -19,6 +19,8 @@ function activePlayer(state = null, action) {
   return state;
 }
 
+// TODO - i think we should just store the current player's bid on the client
+// will be less confusing
 function currentBid(state = [NO_BID, NO_BID], action) {
   if (action.type === SUBMIT_BID) {
     const { playerId, bid } = action;

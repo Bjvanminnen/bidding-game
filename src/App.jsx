@@ -104,8 +104,8 @@ function selector(state) {
     storeId: server.storeId,
     playerIndex: activePlayer,
     ownsTie: server.tieBreaker[activePlayer],
-    currentBid: currentBid[activePlayer] !== NO_BID ? currentBid[activePlayer] :
-      server.serverOnly.bids[activePlayer],
+    currentBid: currentBid[activePlayer] === NO_BID ? server.currentBid :
+      currentBid[activePlayer],
     opponentHasBid: server.bidThisRound[otherPlayer],
     balance: server.balance[activePlayer],
     lineLength: server.item.max - server.item.min + 1,

@@ -1,5 +1,5 @@
 import Server from 'socket.io';
-import { readyForResolve } from '../redux/serverReducer';
+import { readyForResolve, getClientFilteredState } from '../redux/serverReducer';
 
 import { getActiveStore, createActiveStore } from './storeManager';
 
@@ -23,7 +23,8 @@ io.on('connection', socket => {
     console.log('reset');
     unsubscribe();
     unsubscribe = attachSocketToStore(socket, createActiveStore());
-    socket.emit('update', store.getState());
+    const state = getActiveStore().getState();
+    socket.emit('update', getClientFilteredState(state));
   });
 });
 
@@ -41,7 +42,7 @@ function attachSocketToStore(socket, store) {
       return;
     }
 
-    socket.emit('update', state);
+    socket.emit('update', getClientFilteredState(state));
   });
 
   return function detachSocketFomStore() {

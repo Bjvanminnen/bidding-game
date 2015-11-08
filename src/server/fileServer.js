@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 
 const JS_HOST = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
 
-// TODO - this should be pointing at a local path if prod
 var assets = {
   javascript: {
     main: `${JS_HOST}/js/bundle.js`
@@ -23,7 +22,9 @@ var assets = {
 app.use('/js', express.static(__dirname + '/../../dist'));
 
 app.get('/', (req, res) => {
-  const html = <Html store={getActiveStore()} assets={assets}/>
+  let pid = req.query.pid || 1;
+
+  const html = <Html store={getActiveStore()} assets={assets} pid={pid}/>
   res.send('<!doctype html>\n' + ReactDOM.renderToString(html));
 });
 

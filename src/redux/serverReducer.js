@@ -15,11 +15,29 @@ export const resolveBidsIfNecessary = store => next=> action=> {
   }
 };
 
-// helper
+// helpers
 export function readyForResolve(state) {
   const [ p1DidBid, p2DidBid ] = state.bidThisRound;
   return p1DidBid && p2DidBid;
 }
+
+// TODO - would it make sense to take advantage of selectors used in react?
+export function getClientFilteredState(state, pid) {
+  const serverOnly = state.serverOnly;
+  if (!serverOnly || !serverOnly.bids) {
+    return state;
+  }
+
+  return {
+    ...state,
+    ...{ serverOnly: undefined},
+    // this is an imperfect solution, but works for now. socket calls have
+    // an undefined pid atm, thus we return undefined for currentBid. This ok,
+    // because in these cases the client's local state should have currentBid
+    currentBid: pid === undefined ? NO_BID : serverOnly.bids[pid - 1]
+  };
+}
+
 
 // reducers
 const initialStateItem = {
