@@ -6,8 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.prod.js",
     "devserver": "PORT=3001 node devServer",
-    "server": "PORT=3002 node src/server/fileServer-babel.js",
-    "socket-server": "PORT=8080 node src/server/socketServer-babel.js",
+    "server": "SOCKET_PORT=8080 PORT=3002 node src/server/fileServer-babel.js",
     "watch": "webpack --watch"
   },
   "author": "",

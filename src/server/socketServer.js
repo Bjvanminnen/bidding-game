@@ -3,9 +3,11 @@ import { readyForResolve } from '../redux/serverReducer';
 
 import { getActiveStore, createActiveStore } from './storeManager';
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.SOCKET_PORT || 8080;
 
 const io = new Server(PORT);
+
+console.log(`Socket server listening on port ${PORT}`);
 
 // TODO - should really track which are still connected
 let sockets = [];
