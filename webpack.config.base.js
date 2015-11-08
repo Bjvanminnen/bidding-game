@@ -1,15 +1,13 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var PROD = process.env.NODE_ENV === 'production';
-
 module.exports = {
   devtool: "inline-source-map",
   entry: ['./src/index'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: '/dist/'
   },
   resolve: {
     extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"],

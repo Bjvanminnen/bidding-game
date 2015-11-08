@@ -9,12 +9,14 @@ import * as socketServer from './socketServer';
 
 const app = express();
 
-var PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+
+const JS_HOST = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
 
 // TODO - this should be pointing at a local path if prod
 var assets = {
   javascript: {
-    main: 'http://localhost:3001/static/bundle.js'
+    main: `${JS_HOST}/js/bundle.js`
   }
 };
 

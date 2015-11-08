@@ -4,7 +4,7 @@ var assign = require('object-assign');
 var base = require('./webpack.config.base');
 
 module.exports = assign({}, base, {
-  devtool: 'source-map',
+  devtool: 'none',
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({

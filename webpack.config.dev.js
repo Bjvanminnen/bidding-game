@@ -13,7 +13,7 @@ module.exports = assign({}, base, {
     new webpack.NoErrorsPlugin()
   ],
   output: assign({}, base.output, {
-    publicPath: 'http://' + host + ':' + port + '/static/'
+    publicPath: 'http://' + host + ':' + port + '/js/'
   }),
   module: {
     loaders: [
