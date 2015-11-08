@@ -23,13 +23,14 @@ io.on('connection', socket => {
     console.log('reset');
     unsubscribe();
     unsubscribe = attachSocketToStore(socket, createActiveStore());
+    socket.emit('update', store.getState());
   });
 });
 
 
 function attachSocketToStore(socket, store) {
   const onAction = store.dispatch.bind(store);
-  socket.emit('update', store.getState());
+  // socket.emit('update', store.getState());
   socket.on('action', onAction);
 
   const unsubscribeStore = store.subscribe(() => {

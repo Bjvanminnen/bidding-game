@@ -35,7 +35,7 @@ const playerId = parseInt(getParameterByName('pid') || 1, 10) - 1;
 const store = compose(
   applyMiddleware(sendToServer),
   devTools()
-)(createStore)(clientReducer);
+)(createStore)(clientReducer, { serverState: window.__initialState });
 store.dispatch(activatePlayer(playerId));
 
 socket.on('update', state => {
