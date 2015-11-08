@@ -21,14 +21,17 @@ function activePlayer(state = null, action) {
 
 // TODO - i think we should just store the current player's bid on the client
 // will be less confusing
-function currentBid(state = [NO_BID, NO_BID], action) {
+function currentBid(state = NO_BID, action) {
   if (action.type === SUBMIT_BID) {
-    const { playerId, bid } = action;
-    return state.map((_, index) => index === playerId ? bid : NO_BID);
+    const { bid } = action;
+    return bid;
   }
   if (action.type === SERVER_UPDATE) {
     const { bidThisRound } = action.state;
-    return state.map((_, index) => bidThisRound[index] ? state[index] : NO_BID);
+    if (!bidThisRound[0] && !bidThisRound[0]) {
+      // nobody has bid yet. reset our local bid
+      return NO_BID;
+    }    
   }
 
   return state;
